@@ -1,6 +1,7 @@
+# 固定适配Python3.14、Streamlit1.28.2的稳定二进制版本，避免源码编译
 streamlit==1.28.2
-pandas==1.5.3
-numpy==1.21.6
-pillow==10.4.0
-setuptools==66.1.1
+pillow>=10.4.0,<11.0.0
+numpy==1.26.4
+pandas==2.1.4
+setuptools>=75.0.0
 wheel
