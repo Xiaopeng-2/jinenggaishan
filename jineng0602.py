@@ -78,7 +78,6 @@ hr{
 """
 st.markdown(PAGE_CSS, unsafe_allow_html=True)
 
-
 # -------------------- GUIbit数据读取函数 --------------------
 def load_data_from_gui():
     """从GUIbit目录读取jixiao.xlsx文件"""
@@ -116,7 +115,6 @@ def load_data_from_gui():
 SAVE_FILE = load_data_from_gui()
 if SAVE_FILE is None:
     SAVE_FILE = "jixiao.xlsx"
-
 
 # 全局配色池（多颜色，区分不同时间点）
 COLOR_POOL = [
