@@ -398,7 +398,7 @@ def chart_stack(df0: pd.DataFrame):
         template="plotly_dark",
         xaxis_title="任务",
         yaxis_title="分数",
-        legend=dict(orientation="h", y=-0.2)
+        legend=dict(orientation="h", y=-0.4)
     )
     return fig
 
