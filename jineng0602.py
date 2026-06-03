@@ -326,6 +326,48 @@ view = st.sidebar.radio(
     ["编辑数据", "大屏轮播", "单页模式", "显示所有视图", "能力分析", "基础子弹图", "高级子弹图"]
 )
 
+# ========== 新增：删除选中时间点（带二次确认弹窗） ==========
+st.sidebar.markdown("### 删除时间工作表")
+del_sheet_list = st.sidebar.multiselect("勾选要删除的时间点", options=all_time_list)
+
+# 会话状态标记是否打开确认弹窗
+if "open_del_confirm" not in st.session_state:
+    st.session_state.open_del_confirm = False
+
+# 触发弹窗按钮
+if st.sidebar.button("⚠️ 删除勾选工作表（不可恢复）"):
+    if not del_sheet_list:
+        st.sidebar.warning("请先勾选需要删除的时间！")
+    else:
+        st.session_state.open_del_confirm = True
+
+# 弹窗确认区域
+if st.session_state.open_del_confirm:
+    with st.sidebar.container(border=True):
+        st.error(f"【重要警告】即将永久删除：{','.join(del_sheet_list)} \n删除后Excel数据无法找回！")
+        agree = st.checkbox("我已知晓风险，确认永久删除")
+        col1, col2 = st.columns(2)
+        with col1:
+            if agree and st.button("✅ 确认删除", type="primary"):
+                try:
+                    from openpyxl import load_workbook
+                    wb = load_workbook(SAVE_FILE)
+                    for name in del_sheet_list:
+                        if name in wb.sheetnames:
+                            del wb[name]
+                    wb.save(SAVE_FILE)
+                    wb.close()
+                    st.cache_data.clear()
+                    st.sidebar.success(f"已成功删除：{','.join(del_sheet_list)}")
+                    st.session_state.open_del_confirm = False
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"删除异常：{str(e)}")
+        with col2:
+            if st.button("❌ 取消"):
+                st.session_state.open_del_confirm = False
+                st.rerun()
+
 # ==================== 数据合并函数 ====================
 def get_merged_df(keys: List[str], groups: List[str]) -> pd.DataFrame:
     dfs = []
