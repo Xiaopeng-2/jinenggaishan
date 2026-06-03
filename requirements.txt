@@ -1,10 +1,10 @@
-streamlit==1.28.2
-pandas==2.2.3
+streamlit==1.33.0
 numpy>=1.26.0,<2.4
 setuptools
 pillow==9.5.0
 streamlit-autorefresh
-streamlit-echarts
-plotly
-openpyxl
 fonttools
+streamlit-echarts==0.3.2
+plotly==5.18.0
+pandas==2.0.2
+openpyxl==3.1.1
