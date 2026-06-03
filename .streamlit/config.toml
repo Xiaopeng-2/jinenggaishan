@@ -1,4 +1,0 @@
-[server]
-headless = true
-[global]
-encoding = "utf-8"
