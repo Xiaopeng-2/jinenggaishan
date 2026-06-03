@@ -730,7 +730,7 @@ def chart_ability(df0: pd.DataFrame, selected_emps: List[str]):
         "互评分数": "员工任务完成曲线（互评）",
         "双维度对比": "员工任务完成曲线（双维度）"
     }
-    fig1.update_layout(title=title_map[score_dimension], template="plotly_dark", legend=dict(orientation="h", y=-0.25))
+    fig1.update_layout(title=title_map[score_dimension], template="plotly_dark", legend=dict(orientation="h", y=-0.55))
     fig2.update_layout(title="任务整体趋势", template="plotly_dark", legend=dict(orientation="h", y=-0.25))
     fig3.update_layout(title="员工总分对比", template="plotly_dark", legend=dict(orientation="h", y=-0.25))
     return fig1, fig2, fig3
