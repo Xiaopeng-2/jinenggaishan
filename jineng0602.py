@@ -2,9 +2,6 @@ import os
 import time
 from datetime import datetime
 from typing import List, Tuple
-import sys
-# 【改动1：顶部设置标准utf8输出】
-sys.stdout.reconfigure(encoding='utf-8')
 
 import pandas as pd
 import streamlit as st
@@ -20,8 +17,6 @@ PAGE_CSS = """
 body, [data-testid="stAppViewContainer"]{
     background-color: #e6f7ff !important;
     color: #003366 !important;
-    /*【改动2：全局增加中文字体】*/
-    font-family: "Microsoft YaHei",SimHei,"PingFang SC",sans-serif !important;
 }
 [data-testid="stSidebar"]{
     background-color: #d1e7f5 !important;
@@ -407,12 +402,12 @@ def chart_stack(df0: pd.DataFrame):
     )
     return fig
 
-# ===================== 热力图函数（【改动3：ECharts配置增加中文字体】） =====================
+# ===================== 热力图函数（已改为白底+深色文字） =====================
 def chart_heat(df0: pd.DataFrame):
     # 全局空数据拦截
     if df0.empty:
         return {
-            "title": {"text": "暂无有效数据", "left": "center", "textStyle": {"color": "#333333", "fontFamily":"Microsoft YaHei"}},
+            "title": {"text": "暂无有效数据", "left": "center", "textStyle": {"color": "#333333"}},
             "backgroundColor": "#ffffff"
         }
 
@@ -423,7 +418,7 @@ def chart_heat(df0: pd.DataFrame):
     # 维度为空拦截
     if len(task_list) == 0 or len(user_list) == 0:
         return {
-            "title": {"text": "任务/人员数据为空，无法生成热力图", "left": "center", "textStyle": {"color": "#333333", "fontFamily":"Microsoft YaHei"}},
+            "title": {"text": "任务/人员数据为空，无法生成热力图", "left": "center", "textStyle": {"color": "#333333"}},
             "backgroundColor": "#ffffff"
         }
 
@@ -433,7 +428,7 @@ def chart_heat(df0: pd.DataFrame):
         pivot_peer = df0.groupby(["明细", "员工"])["互评值"].sum().unstack(fill_value=0)
     except Exception:
         return {
-            "title": {"text": "数据格式异常，生成失败", "left": "center", "textStyle": {"color": "#333333", "fontFamily":"Microsoft YaHei"}},
+            "title": {"text": "数据格式异常，生成失败", "left": "center", "textStyle": {"color": "#333333"}},
             "backgroundColor": "#ffffff"
         }
 
@@ -489,13 +484,13 @@ def chart_heat(df0: pd.DataFrame):
         min_val -= 1
         max_val += 1
 
-    # ECharts 配置：白底 + 深色文字/坐标轴 + 全字段中文字体
+    # ECharts 配置：白底 + 深色文字/坐标轴
     option = {
         "backgroundColor": "#ffffff",
         "title": {
             "text": title_text,
             "left": "center",
-            "textStyle": {"color": "#333333", "fontSize": 16,"fontFamily":"Microsoft YaHei"}
+            "textStyle": {"color": "#333333", "fontSize": 16}
         },
         "tooltip": {
             "trigger": "item",
@@ -505,13 +500,13 @@ def chart_heat(df0: pd.DataFrame):
         "xAxis": {
             "type": "category",
             "data": user_list,
-            "axisLabel": {"color": "#333333", "rotate": 45, "fontSize": 11,"fontFamily":"Microsoft YaHei"},
+            "axisLabel": {"color": "#333333", "rotate": 45, "fontSize": 11},
             "axisLine": {"lineStyle": {"color": "#999999"}}
         },
         "yAxis": {
             "type": "category",
             "data": task_list,
-            "axisLabel": {"color": "#333333", "fontSize": 11,"fontFamily":"Microsoft YaHei"},
+            "axisLabel": {"color": "#333333", "fontSize": 11},
             "axisLine": {"lineStyle": {"color": "#999999"}}
         },
         "visualMap": {
@@ -522,13 +517,13 @@ def chart_heat(df0: pd.DataFrame):
             "left": "center",
             "bottom": "8%",
             "inRange": {"color": color_list},
-            "textStyle": {"color": "#333333","fontFamily":"Microsoft YaHei"}
+            "textStyle": {"color": "#333333"}
         },
         "series": [{
             "name": "分数",
             "type": "heatmap",
             "data": data,
-            "label": {"show": True, "color": "#000000", "fontSize": 10,"fontFamily":"Microsoft YaHei"},
+            "label": {"show": True, "color": "#000000", "fontSize": 10},
             "itemStyle": {"borderColor": "#eeeeee", "borderWidth": 1},
             "emphasis": {"itemStyle": {"shadowBlur": 8}}
         }]
