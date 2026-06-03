@@ -4,7 +4,7 @@ setuptools
 pillow==9.5.0
 streamlit-autorefresh
 fonttools
-streamlit-echarts==0.3.2
+streamlit-echarts==0.3.0
 plotly==5.18.0
 pandas==2.0.2
 openpyxl==3.1.1
