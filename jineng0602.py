@@ -78,18 +78,18 @@ hr{
 """
 st.markdown(PAGE_CSS, unsafe_allow_html=True)
 
-# -------------------- GUIbit数据读取函数 --------------------
+# -------------------- GUIbit数据读取函数（修复云端路径） --------------------
 def load_data_from_gui():
-    """从目录读取jixiao.xlsx文件"""
+    import os
     try:
-        # 修复路径：补充Streamlit部署默认根路径
+        # 打印当前运行根目录（调试用，上线也可保留）
+        current_dir = os.getcwd()
+        st.sidebar.info(f"🔍 程序当前工作目录：{current_dir}")
+
+        # Streamlit云端固定：仓库根=运行根，只保留2个必试路径
         possible_paths = [
-            "/mount/src/jinenggaishan/jixiao.xlsx", # streamlit云端运行真实根目录
-            "./jixiao.xlsx",
-            "./guibit/jixiao.xlsx",
-            "../jixiao.xlsx",
-            "../guibit/jixiao.xlsx",
-            "jixiao.xlsx"
+            "jixiao.xlsx",          # 最优：仓库根目录（和py同目录）
+            "/mount/src/jinenggaishan/jixiao.xlsx" # 云端绝对路径兜底
         ]
 
         file_path = None
@@ -99,17 +99,19 @@ def load_data_from_gui():
                 break
 
         if not file_path:
-            st.sidebar.error("❌ 未找到jixiao.xlsx文件")
-            st.sidebar.info("请把jixiao.xlsx放到项目根目录（github仓库根目录）")
+            st.sidebar.error("❌ 未找到jixiao.xlsx")
+            st.sidebar.info("✅ 正确放置：GitHub仓库根目录，与jineng0602.py、requirements同级！")
+            st.sidebar.info("检索路径清单：")
             for path in possible_paths:
-                st.sidebar.info(f"  • {path}")
+                st.sidebar.info(f"→ {path}")
+            # 兜底默认文件名，后续报错方便排查
             return "jixiao.xlsx"
 
-        st.sidebar.info(f"🔄 正在从 {file_path} 读取数据...")
+        st.sidebar.success(f"✅ 成功定位文件：{file_path}")
         return file_path
 
     except Exception as e:
-        st.sidebar.error(f"读取路径异常：{str(e)}")
+        st.sidebar.error(f"路径异常：{str(e)}")
         return "jixiao.xlsx"
 
 # 全局配色池（多颜色，区分不同时间点）
